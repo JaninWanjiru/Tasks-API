@@ -98,5 +98,5 @@ app.delete("/tasks/:id", async (req, res) => {
 let port = process.env.PORT || 8800;
 
 app.listen(port, () => {
-  console.log(`App is listening on port ${8800}`);
+  console.log(`App is listening on port ${port}`);
 });
