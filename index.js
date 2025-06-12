@@ -10,7 +10,6 @@ app.get("/", (_req, res) => {
   res.send("<h1>You've unlocked the Tasks API</h1>");
 });
 
-
 // Get all tasks
 app.get("/tasks", async (_req, res) => {
   try {
@@ -38,7 +37,6 @@ app.post("/tasks", async (req, res) => {
   }
 });
 
-
 // Get a specific task
 app.get("/tasks/:id", async (req, res) => {
   try {
@@ -57,7 +55,6 @@ app.get("/tasks/:id", async (req, res) => {
     res.status(500).json({ message: "There's an issue somewhere" });
   }
 });
-
 
 // Update a specific task
 app.patch("/tasks/:id", async (req, res) => {
@@ -82,22 +79,21 @@ app.patch("/tasks/:id", async (req, res) => {
 });
 
 // Delete a task
-// app.delete("/tasks/:id", async (req, res) => {
-//   try {
-//     const { id } = req.params;
-//     await client.task.delete({
-//       where: {
-//             id
-//     },
-//     });
-//     res.status(200).json({
-//       message: `Task has been deleted `,
-//     });
-//   } catch (error) {
-//     console.error(e);
-//     res.status(500).json({ message: `Something went wrong` });
-//   }
-// });
+app.delete("/tasks/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    await client.task.delete({
+      where: {
+        id,
+      },
+    });
+    res.status(200).json({ message: "Task deleted successfully " });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ message: "Something went wrong" });
+  }
+});
+
 
 let port = process.env.PORT || 8800;
 
