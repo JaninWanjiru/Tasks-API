@@ -1,5 +1,5 @@
 import express from "express";
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from "@prisma/client"; 
 
 const app = express();
 const client = new PrismaClient();
@@ -17,7 +17,7 @@ app.get("/tasks", async (_req, res) => {
     res.status(200).json(tasks);
   } catch (e) {
     console.log(e);
-    res.status(500).json({ message: "There's an issue somewhere" });
+    res.status(500).json({ message: "something went wrong" });
   }
 });
 
@@ -33,7 +33,7 @@ app.post("/tasks", async (req, res) => {
     });
     res.status(201).json(newTask);
   } catch (e) {
-    res.status(500).json({ message: "There's an issue somewhere" });
+    res.status(500).json({ message: "something went wrong" });
   }
 });
 
@@ -46,20 +46,17 @@ app.get("/tasks/:id", async (req, res) => {
         id,
       },
     });
-    if (!specificTask) {
-      return req.status(404).json({ message: "Task unavailable" });
-    }
     res.status(200).json(specificTask);
   } catch (e) {
     console.log(e);
-    res.status(500).json({ message: "There's an issue somewhere" });
+    res.status(500).json({ message: "something went wrong" });
   }
 });
 
 // Update a specific task
 app.patch("/tasks/:id", async (req, res) => {
   try {
-    const { title, description, isCompleted } = req.body;
+    const { title, description } = req.body;
     const { id } = req.params;
     const tasks = await client.task.update({
       where: {
@@ -67,14 +64,13 @@ app.patch("/tasks/:id", async (req, res) => {
       },
       data: {
         title,
-        description,
-        isCompleted,
+        description
       },
     });
     res.status(200).json(tasks);
   } catch (e) {
     console.error(e);
-    res.status(500).json({ message: "There's an issue somewhere" });
+    res.status(500).json({ message: "something went wrong" });
   }
 });
 
@@ -82,12 +78,12 @@ app.patch("/tasks/:id", async (req, res) => {
 app.delete("/tasks/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    await client.task.delete({
+    const deletedTask = await client.task.delete({
       where: {
         id,
       },
     });
-    res.status(200).json({ message: "Task deleted successfully " });
+    res.status(200).json({ message: "Task deleted successfully", deletedTask });
   } catch (e) {
     console.error(e);
     res.status(500).json({ message: "Something went wrong" });
